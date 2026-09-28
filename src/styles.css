@@ -1,0 +1,624 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap");
+
+:root {
+  --bg: #0f1712;
+  --panel: #17231c;
+  --panel-raised: #1d2b22;
+  --border: #2c3f32;
+  --copper: #c97d3e;
+  --copper-bright: #e29a5b;
+  --phosphor: #8fefb0;
+  --amber: #e8b339;
+  --text: #e7ede9;
+  --text-muted: #90a398;
+  --danger: #e2604f;
+
+  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(143, 239, 176, 0.05) 1px, transparent 0) 0 0 / 28px 28px,
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- header ---------- */
+
+.app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 24px clamp(16px, 4vw, 48px);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand__mark {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  fill: var(--copper);
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.brand p {
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.view-switch {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.view-switch button {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.view-switch button.is-active {
+  background: var(--copper);
+  color: #1a0f06;
+}
+
+.view-switch button:not(.is-active):hover {
+  color: var(--text);
+  background: var(--panel-raised);
+}
+
+/* ---------- layout geral ---------- */
+
+.app__main {
+  flex: 1;
+  padding: 32px clamp(16px, 4vw, 48px);
+  display: flex;
+  justify-content: center;
+}
+
+.app__footer {
+  padding: 16px clamp(16px, 4vw, 48px) 28px;
+  text-align: center;
+}
+
+.app__footer p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ---------- calculadora ---------- */
+
+.calculator {
+  width: 100%;
+  max-width: 380px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.calculator__display {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: right;
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.calculator__mode {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+.calculator__memory-flag {
+  color: var(--amber);
+}
+
+.calculator__expression {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text-muted);
+  word-break: break-all;
+  min-height: 1.3em;
+}
+
+.calculator__result {
+  font-family: var(--font-mono);
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: var(--phosphor);
+  text-shadow: 0 0 12px rgba(143, 239, 176, 0.35);
+  word-break: break-all;
+  min-height: 1.3em;
+}
+
+.calculator__error {
+  color: var(--danger);
+  font-size: 1.1rem;
+  text-shadow: none;
+}
+
+.calculator__memory {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.calculator__memory button {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 8px 0;
+  background: var(--panel-raised);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.calculator__memory button:hover {
+  color: var(--text);
+  border-color: var(--copper);
+}
+
+.calculator__pad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.key {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  padding: 12px 0;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel-raised);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.05s ease, border-color 0.15s ease;
+}
+
+.key:active {
+  transform: scale(0.96);
+}
+
+.key--num {
+  background: var(--panel-raised);
+}
+
+.key--fn {
+  background: var(--panel);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.key--op {
+  background: transparent;
+  border-color: var(--copper);
+  color: var(--copper-bright);
+}
+
+.key--eq {
+  grid-column: span 1;
+  background: var(--copper);
+  border-color: var(--copper);
+  color: #1a0f06;
+  font-weight: 700;
+}
+
+.key:hover {
+  border-color: var(--copper-bright);
+}
+
+.calculator__history {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.calculator__history h2 {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.calculator__history ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 140px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.calculator__history li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.calculator__history li:hover {
+  background: var(--panel-raised);
+}
+
+.history__expr {
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history__result {
+  color: var(--phosphor);
+  flex-shrink: 0;
+}
+
+/* ---------- fórmulas de elétrica ---------- */
+
+.formulas {
+  width: 100%;
+  max-width: 980px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.formulas__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: sticky;
+  top: 24px;
+}
+
+.nav-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.nav-switch__indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.nav-switch--active {
+  border-color: var(--copper);
+  background: var(--panel-raised);
+}
+
+.nav-switch--active .nav-switch__indicator {
+  background: var(--phosphor);
+  box-shadow: 0 0 6px rgba(143, 239, 176, 0.7);
+}
+
+.nav-switch__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-switch__text strong {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.nav-switch__text small {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.formulas__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.formula-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--copper);
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formula-card__header h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.formula-card__expression {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--amber);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.formula-card__description {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.formula-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field__label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.field__input {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: var(--text);
+}
+
+.field__input:focus-visible {
+  outline: 2px solid var(--copper-bright);
+  outline-offset: 1px;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--amber);
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.result__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.result__value {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--phosphor);
+}
+
+.result__value small {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.item-row .field {
+  flex: 1;
+}
+
+.btn-remove {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--danger);
+  border-radius: 6px;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+}
+
+.btn-add {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.btn-add:hover {
+  border-color: var(--copper);
+  color: var(--copper-bright);
+}
+
+/* ---------- roda de Ohm (SVG) ---------- */
+
+.ohm-wheel {
+  width: 100%;
+  max-width: 260px;
+  margin: 4px auto 8px;
+  display: block;
+}
+
+.wheel-wedge--a {
+  fill: var(--panel-raised);
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+
+.wheel-wedge--b {
+  fill: var(--panel);
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+
+.wheel-hub-circle {
+  fill: var(--copper);
+  stroke: var(--copper-bright);
+  stroke-width: 2;
+}
+
+.wheel-hub-label {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  fill: #1a0f06;
+}
+
+.wheel-letter {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--text);
+}
+
+.wheel-formula {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--text-muted);
+}
+
+/* ---------- responsivo ---------- */
+
+@media (max-width: 720px) {
+  .formulas {
+    grid-template-columns: 1fr;
+  }
+
+  .formulas__nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: static;
+  }
+
+  .nav-switch {
+    flex: 1 1 45%;
+  }
+
+  .grid-2,
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- acessibilidade ---------- */
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--copper-bright);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
